@@ -23,8 +23,8 @@ include(FetchContent)
 
 # boost
 if("$ENV{BOOST_ROOT_1_72_0}" STREQUAL "")
-    nuget(install boost -Version 1.72.0.0 -Framework native -OutputDirectory ${RNSDK_NUGET_ROOT} -NonInteractive)
-    set(BOOST_ROOT ${RNSDK_NUGET_ROOT}/boost.1.72.0.0/lib/native)
+    nuget(install boost -Version 1.71.0.0 -OutputDirectory ${RNSDK_NUGET_ROOT} -NonInteractive)
+    set(BOOST_ROOT ${RNSDK_NUGET_ROOT}/boost.1.71.0.0/lib/native)
 else()
     if(EXISTS $ENV{BOOST_ROOT_1_72_0}/lib/native)
         set(BOOST_ROOT $ENV{BOOST_ROOT_1_72_0}/lib/native)
@@ -70,8 +70,8 @@ list(APPEND RNSDK_COMPILE_DEFINITIONS GTEST_HAS_RTTI=0)
 # Mso
 FetchContent_Declare(
     Mso
-    GIT_REPOSITORY  https://github.com/microsoft/Mso.git
-    GIT_TAG         @microsoft/mso_v0.0.18)
+    GIT_REPOSITORY  https://github.com/afoxman/Mso.git
+    GIT_TAG         9de5d014bc31d5e62162dd78f8d725d2b22da37f)
 if(RNSDK_TARGET_PLATFORM STREQUAL "Win32")
     set(MSO_LIBLET_PLATFORM WIN32 CACHE STRING "" FORCE)
 elseif(RNSDK_TARGET_PLATFORM STREQUAL "macOS")

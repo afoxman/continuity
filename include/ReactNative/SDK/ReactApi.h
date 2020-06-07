@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-
 //  Library export
 
 #ifndef MICROSOFT_REACT_EXPORT
@@ -12,7 +11,7 @@
 #else // !react_native_sdk_EXPORTS
 #define MICROSOFT_REACT_EXPORT __declspec(dllimport)
 #endif // react_native_sdk_EXPORTS
-#else // !WIN32
+#else  // !WIN32
 #define MICROSOFT_REACT_EXPORT
 #endif // WIN32
 #endif // !MICROSOFT_REACT_EXPORT
@@ -23,10 +22,9 @@
 #if defined(__clang__) || !defined(__cplusplus) || defined(__GNUC__)
 #define DECLSPEC_NOVTABLE
 #else
-#define DECLSPEC_NOVTABLE  __declspec(novtable)
+#define DECLSPEC_NOVTABLE __declspec(novtable)
 #endif
 #endif
-
 
 //  Error codes
 
@@ -49,11 +47,13 @@ enum class ReactError : uint32_t
 
 }
 
-
 //  API (function) definition
 
+#if defined(__clang__)
+#define MICROSOFT_REACT_API(returnType) extern "C" [[nodiscard]] MICROSOFT_REACT_EXPORT returnType
+#else
 #define MICROSOFT_REACT_API(returnType) extern "C" [[nodiscard]] MICROSOFT_REACT_EXPORT returnType __stdcall
-
+#endif
 
 //  reference counted interface
 
@@ -66,4 +66,4 @@ struct DECLSPEC_NOVTABLE IRefCounted
     virtual void Release() const noexcept = 0;
 };
 
-}
+} // namespace Microsoft::ReactNative

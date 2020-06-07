@@ -8,7 +8,7 @@ file(MAKE_DIRECTORY ${RNSDK_NUGET_ROOT})
 set(RNSDK_COMPILE_DEFINITIONS "")
 
 set(RNSDK_COMPILE_FLAGS_MSVC /nologo /EHsc /GR- /GS /permissive- /sdl /utf-8 /W4 /WX /Zi /wd4018 /wd4068 /wd4100 /wd4101 /wd4127 /wd4146 /wd4189 /wd4201 /wd4244 /wd4251 /wd4267 /wd4290 /wd4293 /wd4305 /wd4309 /wd4324 /wd4456 /wd4458 /wd4505 /wd4702 /wd4800 /wd4804)
-set(RNSDK_COMPILE_FLAGS_CLANG "")
+set(RNSDK_COMPILE_FLAGS_CLANG -fms-extensions -fms-compatibility-version=19.00)
 set(RNSDK_COMPILE_FLAGS_GCC "")
 
 set(RNSDK_COMPILE_FLAGS_MSVC_DEBUG /Ob0 /Od /RTC1)
@@ -96,8 +96,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         GLOG_NO_ABBREVIATED_SEVERITIES
         RN_EXPORT=
         _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
-#elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-#    set(RNSDK_TARGET_PLATFORM macOS)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(RNSDK_TARGET_PLATFORM macOS)
 #elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 #    set(RNSDK_TARGET_PLATFORM iOS)
 #elseif(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -121,8 +121,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         message(FATAL_ERROR "This project does not support Visual Studio toolset ${MSVC_TOOLSET_VERSION}. It only supports toolset 142 (Visual Studio 2019).")
     endif()
 
-#elseif(CMAKE_CXX_COMPILER_ID IN_LIST "Clang;AppleClang")
-#    set(RNSDK_TARGET_ARCH x64)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    set(RNSDK_TARGET_ARCH x64)
 #elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 #    set(RNSDK_TARGET_ARCH ???)
 else()
@@ -210,6 +210,18 @@ function(add_rnsdk_test TEST_NAME)
         PRIVATE
             gmock
             gtest_main)
+
+    if(RNSDK_TARGET_PLATFORM STREQUAL "macOS" OR RNSDK_TARGET_PLATFORM STREQUAL "iOS")
+
+    message(FATAL_ERROR "Left off here")
+    ##  todo set install rpath to '.' so it loads the dylib from the same path as the executable image
+    ##          (or set it to the install location, if that's possible)
+#CMAKE_SKIP_BUILD_RPATH
+#CMAKE_BUILD_WITH_INSTALL_RPATH
+#CMAKE_INSTALL_RPATH
+#CMAKE_INSTALL_RPATH_USE_LINK_PATH
+
+    endif()
 
     add_test(NAME ${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 endfunction()

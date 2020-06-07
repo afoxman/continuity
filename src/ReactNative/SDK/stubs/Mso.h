@@ -2,4 +2,4 @@
 
 #include <object/make.h>
 #include <object/refCountedObject.h>
-#include <smartPtr/CntPtr.h>
+#include <smartPtr/cntPtr.h>
